@@ -13,4 +13,14 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+// Reject non-JSON responses (e.g. HTML fallback from Vercel)
+api.interceptors.response.use((response) => {
+  const ct = response.headers['content-type'] || '';
+  if (!ct.includes('application/json')) {
+    return Promise.reject(new Error('API returned non-JSON response'));
+  }
+  return response;
+});
+
 export default api;
+
