@@ -7,7 +7,18 @@ const CategoriesPage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    api.get('/categories').then(({ data }) => setCategories(data || [])).catch(() => setCategories([])).finally(() => setLoading(false));
+    api.get('/categories')
+      .then(({ data }) => setCategories(data || []))
+      .catch(() => {
+        // Fallback mock data matching design
+        setCategories([
+          { _id: 'men', name: 'Men' },
+          { _id: 'women', name: 'Women' },
+          { _id: 'accessories', name: 'Accessories' },
+          { _id: 'shoes', name: 'Shoes' }
+        ]);
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   return (
