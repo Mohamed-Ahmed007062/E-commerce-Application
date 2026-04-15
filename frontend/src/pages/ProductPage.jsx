@@ -4,6 +4,8 @@ import api from '../api/axios';
 import { useAuth } from '../context/AuthContext';
 import { Star, Heart, ShoppingCart, Truck, RotateCcw, ShieldCheck, Minus, Plus, ArrowLeft } from 'lucide-react';
 
+const FALLBACK_PRODUCT_IMAGE = 'https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=900&q=80';
+
 const ProductPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -100,7 +102,7 @@ const ProductPage = () => {
   const getImages = () => {
     if (product?.images && product.images.length > 0) return product.images;
     if (product?.image) return [product.image];
-    return [];
+    return [FALLBACK_PRODUCT_IMAGE];
   };
 
   /* Render star rating */
@@ -148,6 +150,7 @@ const ProductPage = () => {
             <img
               src={images[selectedImage] || images[0]}
               alt={product.name}
+              onError={(e) => { e.currentTarget.src = FALLBACK_PRODUCT_IMAGE; }}
             />
           </div>
 
@@ -160,7 +163,7 @@ const ProductPage = () => {
                   className={`pdp-thumb ${selectedImage === idx + 1 ? 'active' : ''}`}
                   onClick={() => setSelectedImage(idx + 1)}
                 >
-                  <img src={img} alt={`${product.name} view ${idx + 2}`} />
+                  <img src={img} alt={`${product.name} view ${idx + 2}`} onError={(e) => { e.currentTarget.src = FALLBACK_PRODUCT_IMAGE; }} />
                 </button>
               ))}
             </div>

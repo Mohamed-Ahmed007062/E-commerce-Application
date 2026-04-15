@@ -3,6 +3,8 @@ import { Link, useSearchParams } from 'react-router-dom';
 import api from '../api/axios';
 import { Star, SlidersHorizontal, Search } from 'lucide-react';
 
+const FALLBACK_PRODUCT_IMAGE = 'https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=900&q=80';
+
 const ShopPage = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -136,7 +138,12 @@ const ShopPage = () => {
             {filteredProducts.map(product => (
               <div key={product._id} className="product-card">
                 <div className="product-card__image-wrapper">
-                  <img src={product.image} alt={product.name} className="product-card__image" />
+                  <img
+                    src={product.image || FALLBACK_PRODUCT_IMAGE}
+                    alt={product.name}
+                    className="product-card__image"
+                    onError={(e) => { e.currentTarget.src = FALLBACK_PRODUCT_IMAGE; }}
+                  />
                 </div>
                 <div className="product-card__info">
                   <h3 className="product-card__name">{product.name}</h3>
